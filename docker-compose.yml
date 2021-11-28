@@ -1,0 +1,10 @@
+version: "3"
+services:
+  bakery-app:
+    build: .
+    ports:
+      - "5000:8000"
+    volumes:
+      - ./:/app
+    env_file:
+      - ./.env 
