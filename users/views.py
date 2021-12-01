@@ -14,9 +14,9 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 
 # user logic code
 @csrf_exempt
+@api_view(['GET', 'PUT', 'DELETE'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([AllowAny])
-@api_view(['GET', 'PUT', 'DELETE'])
 def user(request, id):
     try:
         product = User.objects.get(id=id)
@@ -39,14 +39,13 @@ def user(request, id):
         product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([AllowAny])
 @csrf_exempt
 @api_view(['POST', 'GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([AllowAny])
 def users(request):
     if request.method == 'GET':
         snippets = User.objects.filter(is_superuser=False)
-        print(snippets)
         serializer = UserSerializer(snippets, many=True)
         return Response(serializer.data)
     elif request.method == 'POST':
@@ -58,21 +57,20 @@ def users(request):
 
 
 # owner logic code
-@authentication_classes([TokenAuthentication])
-@permission_classes([AllowAny])
 @csrf_exempt
 @api_view(['POST', 'GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([AllowAny])
 def owners(request):
     if request.method == 'GET':
         snippets = User.objects.filter(is_superuser=True)
-        print(snippets)
         serializer = UserSerializer(snippets, many=True)
         return Response(serializer.data)
 
-@authentication_classes([TokenAuthentication])
-@permission_classes([AllowAny])
 @csrf_exempt
 @api_view(['GET', 'PUT', 'DELETE'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([AllowAny])
 def owner(request, id):
     try:
         product = User.objects.get(id=id)

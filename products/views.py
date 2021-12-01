@@ -10,8 +10,9 @@ from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 
+
 @csrf_exempt
-@api_view(('GET','POST'))
+@api_view(('GET', 'POST'))
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
 def products(request):
@@ -30,6 +31,8 @@ def products(request):
 
 @csrf_exempt
 @api_view(['GET', 'PUT', 'DELETE'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def product(request, id):
     try:
         product = Products.objects.get(id=id)
@@ -50,4 +53,3 @@ def product(request, id):
     elif request.method == 'DELETE':
         product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
