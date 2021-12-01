@@ -10,5 +10,4 @@ urlpatterns = [
     path('owners', owners ,name="all owner"),
     path('owner/<id>', owner, name="single owner"),
     path('gettoken', obtain_auth_token),
-# path('users/<int:pk>/', views.UserDetail.as_view()),
 ]
