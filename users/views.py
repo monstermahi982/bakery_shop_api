@@ -6,13 +6,16 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User
 from .serializers import UserSerializer
-from rest_framework.decorators import api_view, renderer_classes
+from rest_framework.decorators import api_view, renderer_classes,authentication_classes, permission_classes
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
 
 # user logic code
-
 @csrf_exempt
+@authentication_classes([TokenAuthentication])
+@permission_classes([AllowAny])
 @api_view(['GET', 'PUT', 'DELETE'])
 def user(request, id):
     try:
@@ -36,7 +39,8 @@ def user(request, id):
         product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
+# @authentication_classes([TokenAuthentication])
+# @permission_classes([AllowAny])
 @csrf_exempt
 @api_view(['POST', 'GET'])
 def users(request):
@@ -54,7 +58,8 @@ def users(request):
 
 
 # owner logic code
-
+@authentication_classes([TokenAuthentication])
+@permission_classes([AllowAny])
 @csrf_exempt
 @api_view(['POST', 'GET'])
 def owners(request):
@@ -64,7 +69,8 @@ def owners(request):
         serializer = UserSerializer(snippets, many=True)
         return Response(serializer.data)
 
-
+@authentication_classes([TokenAuthentication])
+@permission_classes([AllowAny])
 @csrf_exempt
 @api_view(['GET', 'PUT', 'DELETE'])
 def owner(request, id):
